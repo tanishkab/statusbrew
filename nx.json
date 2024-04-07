@@ -103,5 +103,6 @@
         "cacheableOperations": ["build-storybook"]
       }
     }
-  }
+  },
+  "nxCloudAccessToken": "MzM3ZmI4YmQtNjYwMC00ZmRjLWJiNGUtM2MzN2YzZjM1MGRifHJlYWQtd3JpdGU="
 }

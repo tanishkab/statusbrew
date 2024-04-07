@@ -10,6 +10,7 @@ import {
   ColorGridSelectComponent,
 } from '@brew/ng/ui/components';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import Color from 'color';
 
 @Component({
   standalone: true,
@@ -29,19 +30,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class AppComponent {
   private readonly _fb = inject(FormBuilder);
-  _items = COLOR_GRID_ITEMS;
-  
   public readonly form = this._fb.group({
-    search: this._fb.control('rgb(255,105,180)'),
-    color: this._fb.control(COLOR_GRID_ITEMS[2], {
+    search: this._fb.control(''),
+    color: this._fb.control(COLOR_GRID_ITEMS[0], {
       validators: [Validators.required],
     }),
   });
 
   public inputChanged() {
-    const isPresent = this._items.find(c => c == this.form.controls.search.value)
-    if (!isPresent) {
-      this._items.push(this.form.controls.search.value || '')
+    const val = this.form.controls.search.value
+    const color = Color(val || '')
+    if (color) {
+      this.form.controls.color.setValue(val)
     }
   }
 

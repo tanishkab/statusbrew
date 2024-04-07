@@ -1,7 +1,12 @@
+<div role="dialog">Color options:</div>
 @for(row of grid(); track $index) {
 <div id="color-grid" class="flex">
   @for (item of row; track item) {
   <brew-color-grid-item
+    role="option"
+    [attr.aria-selected]="value === item ? 'true' : 'false'"
+    [attr.aria-disabled]="disabled ? 'true' : 'false'"
+    [attr.aria-label] = "value"
     [checked]="value === item"
     [value]="item"
     [size]="itemSize"

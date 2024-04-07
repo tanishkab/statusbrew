@@ -1,10 +1,11 @@
 <div class="container mx-auto">
   <form [formGroup]="form">
     <mat-form-field class="my-4 w-full">
-      <input matInput formControlName="search" type="search" (change)="inputChanged()"/>
+      <mat-label name="search">Search for color</mat-label>
+      <input matInput formControlName="search" for="search" type="search" (change)="inputChanged()"/>
     </mat-form-field>
     
-    <brew-color-grid-select [value]="form.controls.search.value" [items]="_items" formControlName="color" />
+    <brew-color-grid-select formControlName="color" />
 
     <div class="flex justify-end">
       <button mat-raised-button type="submit">Submit</button>

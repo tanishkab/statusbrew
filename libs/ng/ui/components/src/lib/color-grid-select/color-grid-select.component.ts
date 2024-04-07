@@ -76,7 +76,7 @@ export class ColorGridSelectComponent
 
   private readonly _items = signal(COLOR_GRID_ITEMS);
   private readonly _itemSize = signal<ColorGridItemSize>(
-    COLOR_GRID_ITEM_SIZES[0]
+    COLOR_GRID_ITEM_SIZES[2]
   );
 
   private readonly _el = inject(ElementRef<ColorGridSelectComponent>);
@@ -134,16 +134,9 @@ export class ColorGridSelectComponent
 
   public set value(value: string | null | undefined) {
     this._value = value;
-    if (value) {
-      this.writeValue(value)
+    if (this.colorItems){
+      this._updateKeyManagerActiveItem()
     }
-    this._updateKeyManagerActiveItem();
-  }
-
-  _updateKeyManagerActiveItem() {
-    // this.emitChange(this.value)
-    
-    this._onChange(this.value)
   }
 
   @Input()
@@ -158,12 +151,11 @@ export class ColorGridSelectComponent
     // The calculation will be based on the available width of the element width and itemSize
       const width = document.getElementById('color-grid')?.clientWidth;
       if (width) {
-        let itemSize = this.itemSize == 'small' ? 8 : this.itemSize == 'medium' ? 16 : 20;
+        const itemSize = this.itemSize == 'small' ? 32 : this.itemSize == 'medium' ? 64 : 100;
         this._itemsPerRow = width / itemSize
       } else {
-        this._itemsPerRow = 2
+        this._itemsPerRow = 5
       }
-      console.log(this._itemsPerRow)
     //
 
     return chunk(this._items(), this._itemsPerRow);
@@ -176,11 +168,17 @@ export class ColorGridSelectComponent
   // ControlValueAccessor
   public writeValue(val: string): void {
     this.value = val;
+    
+    const isPresent = this.items.find(c => c == val)
+    if (!isPresent) {
+      this.items = [...this.items, val];
+    }
+    this.grid()
+   
   }
 
   public registerOnChange(onChange: (val?: string | null) => void): void {
     this._onChange = onChange;
-    this.grid()
   }
 
   public registerOnTouched(fn: () => void): void {
@@ -240,8 +238,6 @@ export class ColorGridSelectComponent
       this._el.nativeElement.addEventListener('focusin', this._handleFocusin);
       this._el.nativeElement.addEventListener('focusout', this._handleFocusout);
     });
-
-    this.grid()
   }
 
   public ngOnDestroy() {
@@ -263,18 +259,29 @@ export class ColorGridSelectComponent
    */
   @HostListener('keydown', ['$event'])
   private _onKeydown(event: KeyboardEvent) {
-    switch (event.keyCode) {
-      case UP_ARROW:
-      case DOWN_ARROW:
-      case LEFT_ARROW:
-      case RIGHT_ARROW: {
-        // add logic
-        // ....
-
-        this._keyManager.onKeydown(event); // @fixme remove the following after the grid logic is implemented
-        break;
+    const index = this._keyManager.activeItemIndex
+    let nextIndex = index || 0;
+    if (index) {
+      switch (event.keyCode) {
+        case UP_ARROW:
+          nextIndex = index - Math.floor(this._itemsPerRow);
+          nextIndex = this.sanitizeIndex(nextIndex, index)
+          this._keyManager.setActiveItem(nextIndex); break;
+        case DOWN_ARROW:
+          nextIndex = index + Math.floor(this._itemsPerRow);
+          nextIndex = this.sanitizeIndex(nextIndex, index)
+          this._keyManager.setActiveItem(nextIndex); break;
+        case LEFT_ARROW:
+        case RIGHT_ARROW: 
+        this._keyManager.onKeydown(event); break;
       }
     }
+  }
+
+  sanitizeIndex(nextIndex : number, prevIndex: number) {
+    nextIndex = nextIndex < 0 ? prevIndex : nextIndex;
+    nextIndex = nextIndex >= this.items.length ? prevIndex : nextIndex;
+    return nextIndex;
   }
 
   /** Handles focusout events within the list. */
@@ -343,5 +350,10 @@ export class ColorGridSelectComponent
   private _containsFocus() {
     const activeElement = _getFocusedElementPierceShadowDom();
     return activeElement && this._el.nativeElement.contains(activeElement);
+  }
+
+  private _updateKeyManagerActiveItem() {
+    const index = this.items.findIndex((item) => item == this.value)
+    this._setActiveOption(index);
   }
 }
