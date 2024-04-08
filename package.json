@@ -2,7 +2,9 @@
   "name": "@statusbrew/tech-talent-starter-kit",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "deploy": "gh-pages -d C:/Users/Tanishka/Downloads/tech-talent-starter-kit-main/tech-talent-starter-kit-main/dist/apps/ng-web "
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~17.1.0",
@@ -61,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
     "@typescript-eslint/utils": "^6.13.2",
+    "angular-cli-ghpages": "^2.0.0-beta.2",
     "autoprefixer": "^10.4.0",
     "cypress": "^13.0.0",
     "eslint": "~8.48.0",
