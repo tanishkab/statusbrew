@@ -2,16 +2,16 @@
   "name": "@statusbrew/tech-talent-starter-kit",
   "version": "0.0.0",
   "license": "MIT",
-  "homepage": "https://tanishkab.github.io/statusbrew/",
+  "homepage": "https://tanishkab.github.io/statusbrew2/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tanishkab/statusbrew.git"
+    "url": "https://github.com/tanishkab/statusbrew2.git"
   },
   "scripts": {
-    "pre-deploy": "nx build ng-web  --prod --baseHref=/statusbrew/",
+    "pre-deploy": "nx build ng-web  --prod --baseHref=/statusbrew2/",
     "deploy": "gh-pages -d C:/Users/Tanishka/Downloads/tech-talent-starter-kit-main/tech-talent-starter-kit-main/dist/apps/ng-web "
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "~17.1.0",
     "@angular/cdk": "^17.2.0",

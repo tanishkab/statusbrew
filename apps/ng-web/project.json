@@ -82,5 +82,7 @@
     "deploy": {
       "executor": "angular-cli-ghpages:deploy"
     }
-  }
+  },
+  
+  "buildLibsFromSource": false
 }
