@@ -2,7 +2,13 @@
   "name": "@statusbrew/tech-talent-starter-kit",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://tanishkab.github.io/statusbrew/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tanishkab/statusbrew.git"
+  },
   "scripts": {
+    "pre-deploy": "nx build ng-web  --prod --baseHref=/statusbrew/",
     "deploy": "gh-pages -d C:/Users/Tanishka/Downloads/tech-talent-starter-kit-main/tech-talent-starter-kit-main/dist/apps/ng-web "
   },
   "private": true,
